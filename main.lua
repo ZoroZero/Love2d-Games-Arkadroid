@@ -3,7 +3,8 @@ Class = require 'lib/class'
 push = require 'lib/push'
 
 require 'src/constant'
-
+require 'src/StateMachine'
+require 'src/states/StartState'
 
 function love.load()
 
@@ -54,11 +55,59 @@ function love.load()
         ['victory'] = love.audio.newSource('assets/sounds/victory.wav', 'static'),
         ['wall_hit'] = love.audio.newSource('assets/sounds/wall_hit.wav', 'static')
     }
+
+    -- SETUP STATEMACHINE
+    game_State_Machine = StateMachine{
+        ['start'] = function() return StartState() end
+    }
+
+    love.keyboard.keysPressed = {}
 end
 
+-- UPDATE FUNCTION
+function love.update(dt)
+    game_State_Machine:update(dt)
+end
 
+-- RENDER FUNCTION
+function love.draw()
+    push:start()
+
+    local BACKGROUND_WIDTH = game_Textures['background']:getWidth()
+    local BACKGROUND_HEIGHT = game_Textures['background']:getHeight()
+
+    love.graphics.draw(game_Textures['background'], 
+                        0, 0,
+                        0, 
+                        VIRTUAL_WIDTH /(BACKGROUND_WIDTH -1 ), VIRTUAL_HEIGHT/ (BACKGROUND_HEIGHT -1 ));
+
+    game_State_Machine:render()
+
+    displayFPS()
+
+    push:finish()
+end
+-- RESIZE FUNCTION WHEN WINDOW CHANGE SIZE
 function love.resize(w, h)
     push:resize(w, h)
 end
     
+-- CHECK ANY KEYS WAS PRESSED FUNCITON AND SET ITS VALUE IN KEYSPRESSED = TRUE
+function love.keypressed(key)
+    love.keyboard.keysPressed[key] = true;
+    if key == 'escape' then
+        love.event.quit();
+    end
+end
 
+-- CHECK IF A SPECIFIC KEY WAS PRESSED
+function love.mouse.wasPressed(key)
+    return love.mouse.mousePressed[key];
+end
+
+-- DISPLAY FPS FUNCTION
+function displayFPS()
+    love.graphics.setFont(game_Fonts['smallFont'])
+    love.graphics.setColor(0 , 255, 0, 255)
+    love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10)
+end
