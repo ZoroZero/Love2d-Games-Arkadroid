@@ -1,10 +1,4 @@
-Class = require 'lib/class'
-
-push = require 'lib/push'
-
-require 'src/constant'
-require 'src/StateMachine'
-require 'src/states/StartState'
+require 'src/Dependencies'
 
 function love.load()
 
@@ -34,8 +28,8 @@ function love.load()
     game_Fonts ={
         ['smallFont'] = love.graphics.newFont('assets/fonts/font.ttf', 8),
         ['mediumFont'] = love.graphics.newFont('assets/fonts/font.ttf', 16),
-        ['largeFont'] = love.graphics.newFont('assets/fonts/font.ttf', 28),
-        ['hugeFont'] = love.graphics.newFont('assets/fonts/font.ttf', 50),
+        ['largeFont'] = love.graphics.newFont('assets/fonts/font.ttf', 24),
+        ['hugeFont'] = love.graphics.newFont('assets/fonts/font.ttf', 30),
     }
 
     -- SOUNDS SETUP
@@ -60,54 +54,55 @@ function love.load()
     game_State_Machine = StateMachine{
         ['start'] = function() return StartState() end
     }
+    game_State_Machine:change('start');
 
-    love.keyboard.keysPressed = {}
+    love.keyboard.keysPressed = {};
 end
 
 -- UPDATE FUNCTION
 function love.update(dt)
-    game_State_Machine:update(dt)
+    game_State_Machine:update(dt);
+
+    love.keyboard.keysPressed = {};
 end
 
 -- RENDER FUNCTION
 function love.draw()
-    push:start()
+    push:start();
 
-    local BACKGROUND_WIDTH = game_Textures['background']:getWidth()
-    local BACKGROUND_HEIGHT = game_Textures['background']:getHeight()
+    local BACKGROUND_WIDTH = game_Textures['background']:getWidth();
+    local BACKGROUND_HEIGHT = game_Textures['background']:getHeight();
 
     love.graphics.draw(game_Textures['background'], 
                         0, 0,
                         0, 
                         VIRTUAL_WIDTH /(BACKGROUND_WIDTH -1 ), VIRTUAL_HEIGHT/ (BACKGROUND_HEIGHT -1 ));
 
-    game_State_Machine:render()
+    game_State_Machine:render();
 
-    displayFPS()
+    displayFPS();
 
-    push:finish()
+    push:finish();
 end
 -- RESIZE FUNCTION WHEN WINDOW CHANGE SIZE
 function love.resize(w, h)
-    push:resize(w, h)
+    push:resize(w, h);
 end
     
 -- CHECK ANY KEYS WAS PRESSED FUNCITON AND SET ITS VALUE IN KEYSPRESSED = TRUE
 function love.keypressed(key)
     love.keyboard.keysPressed[key] = true;
-    if key == 'escape' then
-        love.event.quit();
-    end
 end
 
 -- CHECK IF A SPECIFIC KEY WAS PRESSED
-function love.mouse.wasPressed(key)
-    return love.mouse.mousePressed[key];
+function love.keyboard.wasPressed(key)
+    return love.keyboard.keysPressed[key];
 end
+
 
 -- DISPLAY FPS FUNCTION
 function displayFPS()
-    love.graphics.setFont(game_Fonts['smallFont'])
-    love.graphics.setColor(0 , 255, 0, 255)
-    love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10)
+    love.graphics.setFont(game_Fonts['smallFont']);
+    love.graphics.setColor(0 , 255, 0, 255);
+    love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10);
 end
