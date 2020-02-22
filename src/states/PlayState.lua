@@ -61,13 +61,28 @@ function PlayState:update(dt)
     -- Check brick and ball collision
     for k, brick in pairs(self.bricks) do 
         if brick.inPlay and self.ball:collides(brick) then 
-            if ball_center > brick.x and ball_center < brick.x + brick.width then
-                self.ball.dy = -self.ball.dy;
+            local curDis = (brick.x + brick.width/2 - ball_center_x)*(brick.x + brick.width/2 - ball_center_x)
+                            + (brick.y + brick.height/2 - ball_center_y)*(brick.y + brick.height/2 - ball_center_y);
+            if hasCollided then
+                if minDis > curDis then
+                    minDis = curDis;
+                    index = k;
+                end
             else
-                self.ball.dx = -self.ball.dx; 
+                minDis = curDis;
+                index = k;
+                hasCollided = true;
             end
-            brick:hit();
         end
+    end
+
+    if hasCollided then
+        if ball_center_x > self.bricks[index].x and ball_center_x < self.bricks[index].x + self.bricks[index].width then
+                self.ball.dy = -self.ball.dy;
+        else
+            self.ball.dx = -self.ball.dx; 
+        end
+        self.bricks[index]:hit();
     end
 
     -- Update ball
