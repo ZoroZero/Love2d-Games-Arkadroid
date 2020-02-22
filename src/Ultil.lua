@@ -1,5 +1,3 @@
-
-
 -- FUNCTION TO GENERATE QUAD BASED ON ALTAS, TILE WIDTH, TILE HEIGHT
 function generateQuad(atlas, tile_width, tile_height)
     local sprites = {};
@@ -32,6 +30,7 @@ function table.slice(tbl, start, stop, step)
     return sliced
 end
 
+
 -- FUNCTION TO GET PADDLE SPRITES
 function generatePaddles(atlas)
     local y = 64;
@@ -40,7 +39,7 @@ function generatePaddles(atlas)
 
     local quads = {}
 
-    for i = 0, NUM_OF_PADDLE do 
+    for i = 1, NUM_OF_PADDLE do 
         -- small paddle
         quads[counter] = love.graphics.newQuad(x, y, 
                                         SMALL_PADDLE_WIDTH, PADDLE_HEIGHT, atlas:getDimensions());
@@ -63,5 +62,29 @@ function generatePaddles(atlas)
 
         y  = y + PADDLE_HEIGHT * 2;
     end
-    return quads
+    return quads;
+end
+
+
+-- FUNCTION TO CROP THE BALLS AND RETURN THEM
+function generateBalls(atlas)
+    local quad = {}
+    local counter = 1;
+
+    local x = 3 * SMALL_PADDLE_WIDTH;
+    local y = 3 * PADDLE_HEIGHT;
+
+    -- Gets balls on the first row
+    for i = 0, 3 do
+        quad[counter] = love.graphics.newQuad(x + i*BALL_WIDTH, y, BALL_WIDTH, BALL_HEIGHT, atlas:getDimensions());
+        counter = counter + 1;
+    end
+
+    -- Gets balls on the second row
+    for i = 0, 2 do
+        quad[counter] = love.graphics.newQuad(x + i*BALL_WIDTH, y + BALL_HEIGHT, BALL_WIDTH, BALL_HEIGHT, atlas:getDimensions());
+        counter = counter + 1;
+    end
+
+    return quad;
 end
