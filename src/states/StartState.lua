@@ -3,10 +3,19 @@ StartState = Class {__includes = BaseState}
 -- Initialize 
 local highlighted = 1;
 
-function StartState:update(dt) 
+function StartState:update(dt)
+    -- Change menu options 
     if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('down') then
         highlighted = highlighted == 1 and 2 or 1;
         game_Sounds['paddle_hit']:play();
+    end
+
+    -- Enter new state when hit enter
+    if love.keyboard.wasPressed('return') or love.keyboard.wasPressed('enter') then
+        if highlighted == 1 then 
+            game_State_Machine:change('play');
+        end
+        game_Sounds['select']:play();
     end
 
     if love.keyboard.wasPressed('escape') then

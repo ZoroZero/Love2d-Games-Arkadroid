@@ -49,10 +49,15 @@ function love.load()
         ['victory'] = love.audio.newSource('assets/sounds/victory.wav', 'static'),
         ['wall_hit'] = love.audio.newSource('assets/sounds/wall_hit.wav', 'static')
     }
+    --  SETUP FRAMES SPRITES
+    game_Frames = {
+        ['paddles'] = generatePaddles(game_Textures['main']);
+    } 
 
     -- SETUP STATEMACHINE
     game_State_Machine = StateMachine{
-        ['start'] = function() return StartState() end
+        ['start'] = function() return StartState() end,
+        ['play'] = function() return PlayState() end
     }
     game_State_Machine:change('start');
 
