@@ -16,3 +16,7 @@ require 'src/states/PlayState'
 require 'src/Paddle'
 
 require 'src/Ball'
+
+require 'src/Brick'
+
+require 'src/LevelMaker'

@@ -58,9 +58,9 @@ end
 
 
 -- Check if ball collide with anything
-function Ball:collide(object)
-    return (self.x <= object.x + object.width) and (self.x + self.width >= object.x)
-        and (self.y <= object.y + object.height) and (self.y + self.height >= object.y);
+function Ball:collides(object)
+    return not((self.x > object.x + object.width) or (self.x + self.width < object.x)
+        or (self.y > object.y + object.height) or (self.y + self.height < object.y));
 end
 
 

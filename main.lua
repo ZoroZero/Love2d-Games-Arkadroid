@@ -10,7 +10,7 @@ function love.load()
 
     -- SETUP RANDOM SEED
     math.randomseed(os.time());
-    
+
     -- SETUP SCREEN
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         resizable = true,
@@ -55,7 +55,8 @@ function love.load()
     --  SETUP FRAMES SPRITES
     game_Frames = {
         ['paddles'] = generatePaddles(game_Textures['main']),
-        ['balls'] = generateBalls(game_Textures['main'])
+        ['balls'] = generateBalls(game_Textures['main']),
+        ['bricks'] = generateBricks(game_Textures['main'])
     } 
 
     -- SETUP STATEMACHINE

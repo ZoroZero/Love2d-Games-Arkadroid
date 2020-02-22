@@ -10,7 +10,7 @@ function generateQuad(atlas, tile_width, tile_height)
         for x = 0, sheet_width -1 do 
             sprites[sprite_counter] = love.graphics.newQuad(x* tile_width, y* tile_height, 
                                                     tile_width, tile_height, 
-                                                    atlas:getDimension());
+                                                    atlas:getDimensions());
             sprite_counter = sprite_counter + 1
         end
     end
@@ -24,7 +24,7 @@ function table.slice(tbl, start, stop, step)
     local sliced = {};
 
     for i = start or 1, stop or #tbl - 1, step or 1 do
-        sliced[#sliced+1] = tbl[i]
+        sliced[#sliced + step] = tbl[i]
     end
     
     return sliced
@@ -87,4 +87,10 @@ function generateBalls(atlas)
     end
 
     return quad;
+end
+
+
+-- CROP BRICKS FROM SPRITE SHEET
+function generateBricks(atlas)
+    return table.slice(generateQuad(atlas, BRICK_WIDTH, BRICK_HEIGHT), 1, 21, 1);
 end
