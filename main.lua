@@ -123,7 +123,7 @@ end
 
 -- RENDER HEALTH FUNCTION 
 function renderHealth(health)
-    local health_x = VIRTUAL_WIDTH - 70;
+    local health_x = VIRTUAL_WIDTH - 100;
     local health_y = 2;
     -- Render current health
     for i = 1, health do 
@@ -141,5 +141,5 @@ end
 function renderScore(score)
     love.graphics.setFont(game_Fonts['smallFont']);
     love.graphics.setColor(0 , 255, 0, 255);
-    love.graphics.print("Score: " .. tostring(score), VIRTUAL_WIDTH -60, 10);
+    love.graphics.print("Score: " .. tostring(score), VIRTUAL_WIDTH - 60, 2);
 end
