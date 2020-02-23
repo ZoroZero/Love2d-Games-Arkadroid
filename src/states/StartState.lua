@@ -3,6 +3,12 @@ StartState = Class {__includes = BaseState}
 -- Initialize 
 local highlighted = 1;
 
+-- ENTER FUNCTION
+function StartState:enter(params)
+    self.high_scores = params.high_scores
+end
+
+
 function StartState:update(dt)
     -- Change menu options 
     if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('down') then
@@ -14,10 +20,14 @@ function StartState:update(dt)
     if love.keyboard.wasPressed('return') or love.keyboard.wasPressed('enter') then
         if highlighted == 1 then 
             game_State_Machine:change('serve', { paddle = Paddle(1), 
-                                                bricks = LevelMaker.createMap(), 
-                                                health = 2, 
-                                                score = 0
+                                                bricks = LevelMaker.createMap(1), 
+                                                health = 3, 
+                                                score = 0,
+                                                level = 1,
+                                                high_scores = self.high_scores
                                                 });
+        else
+            game_State_Machine:change('high_score', {high_scores = self.high_scores});
         end
         game_Sounds['select']:play();
     end

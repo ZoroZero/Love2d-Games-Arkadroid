@@ -1,30 +1,5 @@
 PlayState = Class {__includes = BaseState}
 
--- -- INIT PLAY STATE
--- function PlayState:init()
---     -- Init paddle
---     self.paddle = Paddle();
-
---     self.pause = false;
-    
---     -- Init ball
---     self.ball = Ball(1);
-    
---     -- Setup ball speed
---     self.ball.dx = math.random(-200,200);
---     self.ball.dy = math.random(-50, 60);
-
---     -- Set up level
---     self.bricks = LevelMaker.createMap();
-
---     -- Set up score
---     self.score = 0;
-
---     -- Set up player health
---     self.health = 3;
--- end
-
-
 -- ENTER PLAY STATE FUNCTION
 function PlayState:enter(params)
     self.paddle = params.paddle;
@@ -32,6 +7,8 @@ function PlayState:enter(params)
     self.health = params.health;
     self.score = params.score;
     self.ball = params.ball;
+    self.level = params.level;
+    self.high_scores = params.high_scores
 
     -- Setup ball speed
     self.ball.dx = math.random(-200,200);
@@ -41,7 +18,7 @@ end
 
 -- PLAY STATE UPDATE FUNCTION
 function PlayState:update(dt)
-    -- Cjeck if game is paused
+    -- Check if game is paused
     if self.pause then 
         if love.keyboard.wasPressed('space') then
             self.pause = false;
@@ -64,6 +41,11 @@ function PlayState:update(dt)
 
     -- Update paddle
     self.paddle:update(dt);
+
+    -- Update particle 
+    for k, brick in pairs(self.bricks) do
+        brick:update(dt);
+    end
 
     -- check if ball collide with paddle
     local ball_center_x = self.ball.x + self.ball.width/2;
@@ -108,23 +90,41 @@ function PlayState:update(dt)
         end
     end
     
-    --If collision happen then execute it 
+
+    -- If collision happen then execute it 
     if hasCollided then
         self.bricks[index]:hit(self.ball);
-        self.score = self.score + 10;
+        self.score = self.score + self.bricks[index].tier * 200 + self.bricks[index].color * 25;
+
+        if self:checkVictory() then 
+            game_Sounds['victory']:play()
+            game_State_Machine:change('victory', {
+                                    paddle = self.paddle,
+                                    ball = self.ball,
+                                    health = self.health,
+                                    score = self.score,
+                                    level = self.level,
+                                    high_scores = self.high_scores
+                                });
+        end
     end
+
 
     -- If ball reach bottom
     if self.ball.y >= VIRTUAL_HEIGHT then
         self.health = self.health - 1;
         if self.health == 0 then
-            game_State_Machine:change('game_over', {score = self.score});
+            game_State_Machine:change('game_over', 
+                                        {   score = self.score,
+                                            high_scores = self.high_scores           
+                                        });
         else
             game_State_Machine:change('serve', {
                 paddle = self.paddle,
                 bricks = self.bricks,
                 health = self.health,
-                score = self.score
+                score = self.score,
+                high_scores = self.high_scores
             });
         end
 
@@ -140,6 +140,11 @@ function PlayState:render()
     -- render bricks
     for k, brick in pairs(self.bricks) do
         brick:render();
+    end
+
+    -- render particle
+    for k,brick in pairs(self.bricks) do
+        brick:renderPariticle();
     end
 
     -- render paddle
@@ -159,4 +164,15 @@ function PlayState:render()
         love.graphics.setFont(game_Fonts['mediumFont']);
         love.graphics.printf("PAUSED", 0, 0, VIRTUAL_WIDTH, 'center');
     end
+end
+
+
+-- FUNCTION TO CHECK IF STAGE IS CLEAR
+function PlayState:checkVictory()
+    for k,brick in pairs(self.bricks) do
+        if brick.inPlay then
+            return false;
+        end
+    end
+    return true;
 end

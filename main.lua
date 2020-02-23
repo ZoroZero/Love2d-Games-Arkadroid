@@ -66,9 +66,15 @@ function love.load()
         ['play'] = function() return PlayState() end,
         ['serve'] = function () return ServingState() end,
         ['game_over'] = function () return GameOverState() end,
+        ['victory'] = function () return VictoryState() end,
+        ['enter_high'] = function () return EnterHighScoreState() end,
+        ['high_score'] = function () return HighScoreState() end
     }
-    game_State_Machine:change('start');
-
+    -- game_State_Machine:change('start', {
+    --                         high_scores = loadHighScores() } );
+    game_State_Machine:change('enter_high', { score = 150,
+        high_scores = loadHighScores(),
+        score_index = 9 } );
     love.keyboard.keysPressed = {};
 end
 
@@ -142,4 +148,47 @@ function renderScore(score)
     love.graphics.setFont(game_Fonts['smallFont']);
     love.graphics.setColor(0 , 255, 0, 255);
     love.graphics.print("Score: " .. tostring(score), VIRTUAL_WIDTH - 60, 2);
+end
+
+-- FUNCTION TO LOAD HIGHSCORE
+function loadHighScores()
+    love.filesystem.setIdentity('arkadroid');
+
+    -- If file not exist the create and init 10 value
+    if not love.filesystem.getInfo('arkadroid.lst') then
+        local init_score = ''
+        for i = 1,10 do
+            init_score = init_score .. 'CTO\n';
+            init_score = init_score .. tostring(i*100) ..'\n';
+        end
+        
+        love.filesystem.write('arkadroid.lst', init_score);
+    end
+
+
+    -- Flag for reading name
+    local name = true;
+    local curName = nil;
+    local counter = 1;
+
+    -- Set up store array
+    local scores = {}
+    for i = 1, 10 do 
+        scores[i] = {
+            name = nil,
+            score = nil
+        };
+    end
+
+    -- Read file
+    for line in love.filesystem.lines('arkadroid.lst') do
+        if name then 
+            scores[counter].name = string.sub( line, 1, 3);
+        else
+            scores[counter].score = tonumber(line);
+            counter = counter + 1;
+        end
+        name = not name;
+    end
+    return scores
 end

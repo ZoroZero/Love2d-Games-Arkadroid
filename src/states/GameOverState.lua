@@ -3,6 +3,7 @@ GameOverState = Class {__includes = BaseState}
 -- ENTER FUNCTION
 function GameOverState:enter(params)
     self.score = params.score;
+    self.high_scores = params.high_scores
 end
 
 
@@ -10,7 +11,7 @@ end
 function GameOverState:update( dt )
     -- Return to menu screen
     if love.keyboard.wasPressed('return') or love.keyboard.wasPressed('enter') then
-        game_State_Machine:change('start');
+        game_State_Machine:change('start', { high_scores = self.high_scores });
     end
 
     -- Check if escape

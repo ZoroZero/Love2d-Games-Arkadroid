@@ -6,7 +6,8 @@ function ServingState:enter(params)
     self.bricks = params.bricks;
     self.health = params.health;
     self.score = params.score;
-
+    self.level = params.level;
+    self.high_scores = params.high_scores;
     -- init ball
     self.ball = Ball(math.random(7));
 end
@@ -22,7 +23,9 @@ function ServingState:update(dt)
                             bricks = self.bricks,
                             ball = self.ball,
                             health = self.health,
-                            score = self.score
+                            score = self.score,
+                            level = self.level,
+                            high_scores = self.high_scores
         });
     end
 
