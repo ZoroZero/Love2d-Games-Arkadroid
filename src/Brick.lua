@@ -21,7 +21,17 @@ end
 
 
 -- Function to call when brick is hit
-function Brick:hit()
+function Brick:hit(ball)
+    assert(ball:collides(self));
+    ball_center_x = ball.x + ball.width / 2;
+    brick_center_x = self.x + self.width / 2;
+    if ball.dx / (ball_center_x - brick_center_x) > 0 then
+        ball.dy = - ball.dy; 
+    elseif (ball_center_x > self.x) and (ball_center_x < self.x + self.width) then
+        ball.dy = -ball.dy;
+    else
+        ball.dx = -ball.dx; 
+    end
     game_Sounds['brick-hit-2']:play();
     self.inPlay = false;
 end

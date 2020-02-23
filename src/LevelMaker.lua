@@ -5,7 +5,7 @@ function LevelMaker.createMap()
     local bricks = {};
 
     -- Init number of rows and cols
-    local rows = math.random(1, 5);
+    local rows = math.random(4, 5);
     local cols = math.random(7,13);
 
     -- Genrate brick

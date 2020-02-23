@@ -94,3 +94,8 @@ end
 function generateBricks(atlas)
     return table.slice(generateQuad(atlas, BRICK_WIDTH, BRICK_HEIGHT), 1, 21, 1);
 end
+
+-- CROP HEARTS
+function generateHearts(atlas)
+    return generateQuad(atlas, HEART_WIDTH, HEART_HEIGHT)
+end

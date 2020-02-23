@@ -45,10 +45,10 @@ function Ball:update( dt )
         self.y = 0;
         self.dy = -self.dy;
         game_Sounds['wall_hit']:play();
-    elseif self.y >= VIRTUAL_HEIGHT - self.height then
-        self.y = VIRTUAL_HEIGHT - self.height;
-        self.dy = -self.dy;
-        game_Sounds['wall_hit']:play();
+    -- elseif self.y >= VIRTUAL_HEIGHT - self.height then
+    --     self.y = VIRTUAL_HEIGHT - self.height;
+    --     self.dy = -self.dy;
+    --     game_Sounds['wall_hit']:play();
     end
 
     -- Update ball position

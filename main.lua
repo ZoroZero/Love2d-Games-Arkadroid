@@ -56,13 +56,16 @@ function love.load()
     game_Frames = {
         ['paddles'] = generatePaddles(game_Textures['main']),
         ['balls'] = generateBalls(game_Textures['main']),
-        ['bricks'] = generateBricks(game_Textures['main'])
+        ['bricks'] = generateBricks(game_Textures['main']),
+        ['hearts'] = generateHearts(game_Textures['heart'])
     } 
 
     -- SETUP STATEMACHINE
     game_State_Machine = StateMachine{
         ['start'] = function() return StartState() end,
-        ['play'] = function() return PlayState() end
+        ['play'] = function() return PlayState() end,
+        ['serve'] = function () return ServingState() end,
+        ['game_over'] = function () return GameOverState() end,
     }
     game_State_Machine:change('start');
 
@@ -115,4 +118,28 @@ function displayFPS()
     love.graphics.setFont(game_Fonts['smallFont']);
     love.graphics.setColor(0 , 255, 0, 255);
     love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10);
+end
+
+
+-- RENDER HEALTH FUNCTION 
+function renderHealth(health)
+    local health_x = VIRTUAL_WIDTH - 70;
+    local health_y = 2;
+    -- Render current health
+    for i = 1, health do 
+        love.graphics.draw(game_Textures['heart'], game_Frames['hearts'][1], (i-1) * HEART_WIDTH + health_x , health_y)
+    end
+
+    -- Render losing health
+    health_x = health_x + health * HEART_WIDTH;
+    for i = 1, 3 - health do 
+        love.graphics.draw(game_Textures['heart'], game_Frames['hearts'][2], (i-1) * HEART_WIDTH + health_x , health_y)
+    end
+end
+
+-- RENDER SCORE
+function renderScore(score)
+    love.graphics.setFont(game_Fonts['smallFont']);
+    love.graphics.setColor(0 , 255, 0, 255);
+    love.graphics.print("Score: " .. tostring(score), VIRTUAL_WIDTH -60, 10);
 end

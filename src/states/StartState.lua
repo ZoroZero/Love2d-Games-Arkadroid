@@ -13,7 +13,11 @@ function StartState:update(dt)
     -- Enter new state when hit enter
     if love.keyboard.wasPressed('return') or love.keyboard.wasPressed('enter') then
         if highlighted == 1 then 
-            game_State_Machine:change('play');
+            game_State_Machine:change('serve', { paddle = Paddle(1), 
+                                                bricks = LevelMaker.createMap(), 
+                                                health = 2, 
+                                                score = 0
+                                                });
         end
         game_Sounds['select']:play();
     end

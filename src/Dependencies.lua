@@ -12,6 +12,8 @@ require 'src/StateMachine'
 require 'src/states/BaseState'
 require 'src/states/StartState'
 require 'src/states/PlayState'
+require 'src/states/ServingState'
+require 'src/states/GameOverState'
 
 require 'src/Paddle'
 
