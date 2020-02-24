@@ -21,25 +21,27 @@ end
 function EnterHighScoreState:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         -- Update high score
-        local name = string.char( chars[1] ) .. string.char( chars[1] ) .. string.char( chars[1] );
+        local entry_name = string.char( chars[1] ) .. string.char( chars[1] ) .. string.char( chars[1] );
         for i = 10, self.score_index, -1 do
             self.high_scores[i + 1] = {
                 name = self.high_scores[i].name,
-                score = self.high_scores[i].score
+                score  = self.high_scores[i].score,
             }
         end
 
-        self.high_scores[self.score_index].name = name;
-        self.high_scores[self.score_index].score = self.score;
+        self.high_scores[self.score_index] = {
+            name = entry_name,
+            score = self.score,
+        }
 
         -- Update to file
         local updated_score = ''
         for i = 1,10 do
-            updated_score = updated_score ..  self.high_scores[self.score_index].name .. '\n';
-            updated_score = updated_score .. tostring( self.high_scores[self.score_index].score) ..'\n';
+            updated_score = updated_score ..  self.high_scores[i].name .. '\n';
+            updated_score = updated_score .. tostring(self.high_scores[i].score) ..'\n';
         end
 
-        love.filesystem.write('arkadroid', updated_score);
+        love.filesystem.write('arkadroid.lst', updated_score);
 
         game_State_Machine:change('high_score', {
                                                 high_scores = self.high_scores

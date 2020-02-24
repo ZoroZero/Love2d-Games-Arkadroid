@@ -74,7 +74,7 @@ function love.load()
     --                         high_scores = loadHighScores() } );
     game_State_Machine:change('enter_high', { score = 150,
         high_scores = loadHighScores(),
-        score_index = 9 } );
+        score_index = 3 } );
     love.keyboard.keysPressed = {};
 end
 
