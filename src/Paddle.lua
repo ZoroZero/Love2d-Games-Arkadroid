@@ -1,7 +1,7 @@
 
 Paddle = Class {}
 
-function Paddle:init()
+function Paddle:init(skin)
     self.x = VIRTUAL_WIDTH /2 -32;
     self.y = VIRTUAL_HEIGHT - 32;
 
@@ -13,7 +13,7 @@ function Paddle:init()
     self.height = PADDLE_HEIGHT;
 
     -- Skin
-    self.skin = 1;
+    self.skin = skin;
 
     -- Size 1: small, 2:medium, 3: large, 4:mega
     self.size = 2;

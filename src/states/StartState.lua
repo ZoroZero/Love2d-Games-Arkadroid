@@ -19,11 +19,7 @@ function StartState:update(dt)
     -- Enter new state when hit enter
     if love.keyboard.wasPressed('return') or love.keyboard.wasPressed('enter') then
         if highlighted == 1 then 
-            game_State_Machine:change('serve', { paddle = Paddle(1), 
-                                                bricks = LevelMaker.createMap(1), 
-                                                health = 3, 
-                                                score = 0,
-                                                level = 1,
+            game_State_Machine:change('select_paddle', {
                                                 high_scores = self.high_scores
                                                 });
         else

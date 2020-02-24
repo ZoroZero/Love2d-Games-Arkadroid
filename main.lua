@@ -57,7 +57,8 @@ function love.load()
         ['paddles'] = generatePaddles(game_Textures['main']),
         ['balls'] = generateBalls(game_Textures['main']),
         ['bricks'] = generateBricks(game_Textures['main']),
-        ['hearts'] = generateHearts(game_Textures['heart'])
+        ['hearts'] = generateHearts(game_Textures['heart']),
+        ['arrows'] = generateQuad(game_Textures['arrow'], ARROW_WIDTH, ARROW_HEIGHT)
     } 
 
     -- SETUP STATEMACHINE
@@ -68,13 +69,17 @@ function love.load()
         ['game_over'] = function () return GameOverState() end,
         ['victory'] = function () return VictoryState() end,
         ['enter_high'] = function () return EnterHighScoreState() end,
-        ['high_score'] = function () return HighScoreState() end
+        ['high_score'] = function () return HighScoreState() end,
+        ['select_paddle'] = function () return PaddleSelectState() end
     }
-    -- game_State_Machine:change('start', {
-    --                         high_scores = loadHighScores() } );
-    game_State_Machine:change('enter_high', { score = 150,
-        high_scores = loadHighScores(),
-        score_index = 3 } );
+    game_State_Machine:change('start', {
+                            high_scores = loadHighScores() } );
+
+    -- PLAY BACKGROUND MUSIC
+    game_Sounds['music']:play();
+    game_Sounds['music']:setLooping(true);
+
+    -- SET UP TABLE TO CHECK KEY PRESSED
     love.keyboard.keysPressed = {};
 end
 

@@ -8,11 +8,11 @@ function PlayState:enter(params)
     self.score = params.score;
     self.ball = params.ball;
     self.level = params.level;
-    self.high_scores = params.high_scores
+    self.high_scores = params.high_scores;
 
     -- Setup ball speed
-    self.ball.dx = math.random(-200,200);
-    self.ball.dy = math.random(-50, 60);
+    self.ball.dx = math.random(2) == 1 and math.random(1,20)* 10 or -math.random(1,20)* 10;
+    self.ball.dy = math.random(2) == 1 and math.random(2,5)* 10 or -math.random(2,5)* 10;
 end
 
 
@@ -111,7 +111,7 @@ function PlayState:update(dt)
 
 
     -- If ball reach bottom
-    if self.ball.y >= VIRTUAL_HEIGHT then
+    if self.ball.y >= VIRTUAL_HEIGHT - self.ball.height then
         self.health = self.health - 1;
         if self.health == 0 then
             game_State_Machine:change('game_over', 
@@ -124,6 +124,7 @@ function PlayState:update(dt)
                 bricks = self.bricks,
                 health = self.health,
                 score = self.score,
+                level = self.level,
                 high_scores = self.high_scores
             });
         end

@@ -21,7 +21,7 @@ end
 function EnterHighScoreState:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         -- Update high score
-        local entry_name = string.char( chars[1] ) .. string.char( chars[1] ) .. string.char( chars[1] );
+        local entry_name = string.char( chars[1] ) .. string.char( chars[2] ) .. string.char( chars[3] );
         for i = 10, self.score_index, -1 do
             self.high_scores[i + 1] = {
                 name = self.high_scores[i].name,

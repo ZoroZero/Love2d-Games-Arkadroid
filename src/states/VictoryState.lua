@@ -18,7 +18,7 @@ function VictoryState:update( dt )
                             bricks = LevelMaker.createMap(self.level + 1),
                             health = self.health,
                             score = self.score,
-                            level = self.level,
+                            level = self.level + 1,
                             high_scores = self.high_scores
         });
     end

@@ -41,6 +41,6 @@ function HighScoreState:render()
     end
 
     love.graphics.setFont(game_Fonts['smallFont']);
-    love.graphics.printf('Press enter to return to menu', 0, VIRTUAL_HEIGHT - 20, VIRTUAL_WIDTH, 'center');
+    love.graphics.printf('Press escape to return to menu', 0, VIRTUAL_HEIGHT - 20, VIRTUAL_WIDTH, 'center');
 
 end
