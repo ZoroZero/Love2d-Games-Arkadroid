@@ -54,14 +54,14 @@ function PaddleSelectState:render()
     -- Draw arrow:
     -- Left arrow
     if current_pad == 1 then 
-        love.graphics.setColor(40, 40, 40, 128);
+        love.graphics.setColor(40/255, 40/255, 40/255, 128);
     end
     love.graphics.draw(game_Textures['arrow'], game_Frames['arrows'][1], VIRTUAL_WIDTH/2 - 100, VIRTUAL_HEIGHT/2 + 40);
 
     love.graphics.setColor(255,255,255,255);
     -- right arrow
     if current_pad == 4 then 
-        love.graphics.setColor(40, 40, 40, 128);
+        love.graphics.setColor(40/255, 40/255, 40/255, 128);
     end
     love.graphics.draw(game_Textures['arrow'], game_Frames['arrows'][2], VIRTUAL_WIDTH/2 + 100, VIRTUAL_HEIGHT/2 + 40);
 
